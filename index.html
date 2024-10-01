@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب نسبة الوزن والطول لدخول الجيش</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="army.png">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark-mode {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .dark-mode .form-control,
+        .dark-mode .btn {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 40px 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .container {
+            background-color: #34495e;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2980b9;
+            margin-bottom: 20px;
+        }
+
+        .dark-mode h2 {
+            color: #ecf0f1;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .dark-mode .form-label {
+            color: #ecf0f1;
+        }
+
+        .btn-primary {
+            background-color: #2980b9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a6698;
+        }
+
+        .btn-secondary {
+            background-color: #bdc3c7;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #95a5a6;
+        }
+
+        .dark-mode .btn-primary {
+            background-color: #3498db;
+        }
+
+        .dark-mode .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .toggle-btn,
+        .text-size-controls {
+            position: fixed;
+            top: 20px;
+        }
+
+        .toggle-btn {
+            left: 20px;
+        }
+
+        .text-size-controls {
+            right: 20px;
+        }
+
+        .table {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table th,
+        .table td {
+            text-align: center;
+        }
+
+        .dark-mode .table {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        .responsive-text {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .form-control {
+                font-size: 1rem;
+            }
+
+            .btn-primary {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .responsive-text {
+                font-size: 1.2rem;
+            }
+        }
+
+        .form-icon {
+            margin-right: 8px;
+        }
+
+        /* تأثيرات أنيقة على الحقول */
+        .form-control {
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 2px solid #bdc3c7;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2980b9;
+            box-shadow: none;
+        }
+
+        /* تباعد أفضل بين العناصر */
+        .mb-3 {
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <div class="container mt-5">
+        <button class="btn btn-secondary toggle-btn" id="toggleMode" aria-label="تبديل الوضع بين النهاري والليلي">
+            <i class="fas fa-adjust"></i> تبديل الوضع
+        </button>
+
+        <div class="text-size-controls">
+            <button class="btn btn-outline-secondary" id="increaseTextSize" aria-label="تكبير النص">تكبير النص</button>
+            <button class="btn btn-outline-secondary" id="decreaseTextSize" aria-label="تصغير النص">تصغير النص</button>
+        </div>
+
+        <h2 class="text-center mb-4 responsive-text">حساب نسبة الوزن والطول لدخول الجيش</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form id="calculatorForm">
+                    <div class="mb-3">
+                        <label for="height" class="form-label">
+                            <i class="fas fa-ruler-vertical form-icon"></i> الطول (سم)
+                        </label>
+                        <input type="number" class="form-control" id="height" required
+                            aria-label="إدخال الطول بالسنتمتر" data-bs-toggle="tooltip" title="أدخل طولك بالسنتمتر">
+                    </div>
+                    <div class="mb-3">
+                        <label for="weight" class="form-label">
+                            <i class="fas fa-weight form-icon"></i> الوزن (كجم)
+                        </label>
+                        <input type="number" class="form-control" id="weight" required
+                            aria-label="إدخال الوزن بالكيلو جرام" data-bs-toggle="tooltip"
+                            title="أدخل وزنك بالكيلو جرام">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"
+                        aria-label="احسب نسبة الطول إلى الوزن">احسب</button>
+                </form>
+            </div>
+        </div>
+        <div id="result" class="mt-5">
+            <!-- سيتم إدراج الجدول هنا -->
+        </div>
+        <!-- مشاركة النتائج -->
+        <div class="text-center">
+            <button class="btn btn-info" onclick="shareResults()"><i class="fas fa-share-alt"></i> مشاركة النتائج</button>
+        </div>
+
+        <!-- نموذج عرض الصورة -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">نتائجك</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="resultImage" src="" alt="نتائجك" class="img-fluid">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="downloadBtn" class="btn btn-primary">تحميل الصورة</button>
+                        <button id="shareImageBtn" class="btn btn-info" onclick="shareImage()">مشاركة الصورة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // تبديل بين الوضع النهاري والليلي
+        document.getElementById('toggleMode').addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // التحكم بحجم النص
+        let currentFontSize = 1;
+        document.getElementById('increaseTextSize').addEventListener('click', function () {
+            currentFontSize += 0.1;
+            document.body.style.fontSize = currentFontSize + 'em';
+        });
+
+        document.getElementById('decreaseTextSize').addEventListener('click', function () {
+            currentFontSize = Math.max(0.8, currentFontSize - 0.1);
+            document.body.style.fontSize = currentFontSize + 'em';
+        });
+
+        // عند الضغط على زر "احسب"
+        document.getElementById('calculatorForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            calculate();
+        });
+
+        function calculate() {
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            if (isNaN(height) || isNaN(weight) || height < 100 || weight < 30) {
+                alert('يرجى إدخال قيم منطقية للطول والوزن.');
+                return;
+            }
+
+            const results = [];
+            for (let ratio = 1.2; ratio <= 1.6; ratio += 0.1) {
+                const excessWeight = ((height - 100) * ratio).toFixed(1);
+                const acceptableWeight = ((height - 100) * ratio * 0.5).toFixed(1);
+
+                let status = '';
+                if (weight < acceptableWeight) {
+                    status = 'وزن ناقص (إعفاء) <i class="fas fa-exclamation-circle table-icon text-danger"></i>';
+                } else if (weight > excessWeight) {
+                    status = 'وزن زائد (إعفاء) <i class="fas fa-times-circle table-icon text-danger"></i>';
+                } else {
+                    status = 'لائق للخدمة <i class="fas fa-check-circle table-icon text-success"></i>';
+                }
+
+                results.push({
+                    ratio: ratio.toFixed(1),
+                    acceptableWeight,
+                    excessWeight,
+                    status
+                });
+            }
+
+            displayResults(results);
+        }
+
+        function displayResults(results) {
+            let table = `
+                <table class="table table-striped table-bordered mt-4">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">النسبة</th>
+                            <th scope="col">الوزن المقبول</th>
+                            <th scope="col">الوزن الزائد</th>
+                            <th scope="col">الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            results.forEach(result => {
+                let rowClass = result.status.includes('إعفاء') ? 'table-danger' : 'table-success';
+                table += `
+                    <tr class="${rowClass}">
+                        <td>${result.ratio}</td>
+                        <td>${result.acceptableWeight}</td>
+                        <td>${result.excessWeight}</td>
+                        <td>${result.status}</td>
+                    </tr>
+                `;
+            });
+
+            table += '</tbody></table>';
+            document.getElementById('result').innerHTML = table;
+        }
+        
+        // مشاركة الصورة
+        function shareImage() {
+            const imageSrc = document.getElementById('resultImage').src;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'نتائجي',
+                    text: 'مشاركة نتائجي من حاسبة الوزن والطول.',
+                    files: [new File([imageSrc], 'نتائجي.png', { type: 'image/png' })],
+                    url: window.location.href
+                }).catch(error => console.log('Error sharing', error));
+            } else {
+                alert('المشاركة غير مدعومة في هذا المتصفح.');
+            }
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
